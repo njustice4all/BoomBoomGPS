@@ -6,5 +6,6 @@ const initialAction = { type: NavigationActions.Init };
 const initialState = RootStackNavigator.router.getStateForAction(initialAction);
 
 export default (state = initialState, action) => {
-  return RootStackNavigator.router.getStateForAction(action, state);
+  const nextState = RootStackNavigator.router.getStateForAction(action, state);
+  return nextState || state;
 };

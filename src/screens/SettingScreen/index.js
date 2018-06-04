@@ -1,6 +1,7 @@
 import React from 'react';
 import { Text, View, Switch, TouchableNativeFeedback } from 'react-native';
 
+import { PURPLE, headerTitleStyle } from '../../styles';
 import styles from './styles';
 import { IconIonicons } from '../../components/Icons';
 import BoomBoomGPS from '../../modules/BoomBoomGPS';
@@ -12,14 +13,10 @@ class SettingScreen extends React.Component {
     title: '설 정',
     headerTintColor: 'white',
     headerStyle: {
-      backgroundColor: '#5f4aa5',
+      backgroundColor: PURPLE,
       elevation: 0,
     },
-    headerTitleStyle: {
-      fontWeight: '500',
-      fontSize: 22,
-      alignSelf: 'center',
-    },
+    headerTitleStyle,
     headerRight: <View />,
   };
 

@@ -1,64 +1,38 @@
 import React, { PureComponent } from 'react';
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  FlatList,
-  Image,
-  TouchableNativeFeedback,
-  Linking,
-} from 'react-native';
+import { View, Text, FlatList, Image, Linking } from 'react-native';
 import { connect } from 'react-redux';
 
 import { actionGetAllShops, actionLoadMoreShops } from '../../actions/actionTypes';
 
+import { PURPLE, headerTitleStyle } from '../../styles';
 import styles from './styles';
 import { IconFeather, IconIonicons } from '../../components/Icons';
+import TouchableItem from '../../components/TouchableItem';
 
-const Item = ({ item, navigation }) => (
-  <TouchableNativeFeedback
-    onPress={() => Linking.openURL('https://www.naver.com')}
-    // onPress={() => navigation.navigate('DetailScreen', { title: item.login.username })}
-    background={TouchableNativeFeedback.SelectableBackground()}>
-    <View
-      style={{
-        backgroundColor: '#4b416e',
-        marginTop: 20,
-        flexDirection: 'row',
-        padding: 10,
-      }}>
-      <View
-        style={{
-          width: 100,
-          height: 100,
-          borderRadius: 50,
-          overflow: 'hidden',
-        }}>
-        <Image style={{ flex: 1 }} source={{ uri: item.picture.large }} />
+const Item = ({ item, navigation, onItemPress }) => (
+  <TouchableItem style={styles.itemContainer} onPress={onItemPress(navigation, item)}>
+    <View style={styles.itemInner}>
+      <View style={styles.itemImage}>
+        <Image style={styles.image} source={{ uri: item.picture.large }} />
       </View>
-      <View style={{ flex: 1, marginLeft: 10, justifyContent: 'center' }}>
+      <View style={styles.itemContentView}>
         <View>
-          <Text style={{ color: 'white' }}>{item.login.username}</Text>
+          <Text style={styles.itemText}>{item.login.username}</Text>
         </View>
         <View>
-          <Text style={{ color: 'white' }}>
+          <Text style={styles.itemText}>
             {item.location.city} {item.location.state} {item.location.street}
           </Text>
         </View>
         <View>
-          <Text style={{ color: 'white' }}>{item.email}</Text>
+          <Text style={styles.itemText}>{item.email}</Text>
         </View>
       </View>
-      <View
-        style={{
-          justifyContent: 'center',
-          alignItems: 'center',
-          width: 40,
-        }}>
+      <View style={styles.itemArrow}>
         <IconIonicons name="ios-arrow-forward" size={22} color="white" />
       </View>
     </View>
-  </TouchableNativeFeedback>
+  </TouchableItem>
 );
 
 class HomeScreen extends PureComponent {
@@ -68,30 +42,23 @@ class HomeScreen extends PureComponent {
     title: '아티사운드',
     headerTintColor: 'white',
     headerStyle: {
-      backgroundColor: '#5f4aa5',
+      backgroundColor: PURPLE,
       elevation: 0,
     },
-    headerTitleStyle: {
-      fontWeight: '500',
-      fontSize: 22,
-      alignSelf: 'center',
-    },
+    headerTitleStyle,
     headerLeft: <View />,
     headerRight: (
-      <TouchableOpacity
-        style={{ marginRight: 10, borderRadius: 20 }}
-        activeOpacity={0.4}
-        onPress={() => navigation.navigate('SettingScreen')}>
-        <View
-          style={{
-            flex: 1,
-            width: 50,
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}>
+      <TouchableItem
+        onPressIn={() =>
+          setTimeout(() => {
+            navigation.navigate('SettingScreen');
+          }, 100)
+        }
+        borderless>
+        <View style={styles.settingView}>
           <IconFeather name="settings" size={22} color="white" />
         </View>
-      </TouchableOpacity>
+      </TouchableItem>
     ),
   });
 
@@ -99,12 +66,18 @@ class HomeScreen extends PureComponent {
     this.props.getAllShops();
   }
 
-  onRefresh = () => {
+  _onRefresh = () => {
     this.props.getAllShops();
   };
 
-  loadMore = () => {
+  _loadMore = () => {
     this.props.loadMore();
+  };
+
+  onItemPress = (navigation, item) => () => {
+    // FIXME:
+    Linking.openURL('https://www.naver.com');
+    // navigation.navigate('DetailScreen', { title: item.login.username });
   };
 
   render() {
@@ -124,10 +97,12 @@ class HomeScreen extends PureComponent {
           data={lists}
           keyExtractor={(item, index) => String(index)}
           refreshing={isFetching}
-          onRefresh={this.onRefresh}
-          onEndReached={this.loadMore}
+          onRefresh={this._onRefresh}
+          onEndReached={this._loadMore}
           onEndReachedThreshold={1}
-          renderItem={({ item }) => <Item item={item} navigation={navigation} />}
+          renderItem={({ item }) => (
+            <Item item={item} navigation={navigation} onItemPress={this.onItemPress} />
+          )}
         />
       </View>
     );

@@ -10,12 +10,12 @@ import android.os.IBinder;
 import android.util.Log;
 import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 import kr.co.innochal.touchsorilibrary.classes.OnTouchSoriListener;
 import kr.co.innochal.touchsorilibrary.classes.TouchSori;
-import kr.co.innochal.touchsorilibrary.common.Result;
 import kr.co.innochal.touchsorilibrary.common.SoundResult;
 import kr.co.innochal.touchsorilibrary.common.Status;
 
@@ -198,6 +198,26 @@ public class BoomBoomService extends Service {
         BoomBoomModel shop = new BoomBoomModel();
         String[] result = soundResult.toString().split("SOUND_RESULT_");
         Log.e("BOOM!!!!!", result[1]);
+
+        try {
+          for (int i = 0; i < shopLists.size(); i++) {
+            if (shopLists.get(i).frequency.equals(result[1])) {
+              shop = new BoomBoomModel(
+                shopLists.get(i).name,
+                shopLists.get(i).id,
+                shopLists.get(i).lat,
+                shopLists.get(i).lng,
+                shopLists.get(i).uri,
+                shopLists.get(i).frequency,
+                shopLists.get(i).description
+              );
+            }
+          }
+        } catch (Exception e) {
+          e.printStackTrace();
+        }
+
+        boomBoomHelper.boomBoomGetNoti(shop);
       }
     });
 

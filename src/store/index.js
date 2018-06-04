@@ -2,6 +2,7 @@ import { createStore, applyMiddleware } from 'redux';
 import { createLogger } from 'redux-logger';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import createSagaMiddleware, { END } from 'redux-saga';
+import { navigationMiddleware } from '../utils/reduxNavigation';
 
 import rootSaga from '../sagas';
 import reducer from '../reducers';
@@ -13,11 +14,10 @@ export default function configureStore(initialState) {
   // logger option
   const logger = createLogger({ collapsed: true });
 
-  const middlewares = [sagaMiddleware];
-
-  if (window.__REDUX_DEVTOOLS_EXTENSION__) {
-    middlewares.push(logger);
-  }
+  /** ************************************************** */
+  /** ***************** middlewares ******************** */
+  /** ************************************************** */
+  const middlewares = [sagaMiddleware, navigationMiddleware, logger];
 
   const store = createStore(
     reducer,
