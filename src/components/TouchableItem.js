@@ -1,4 +1,6 @@
 /**
+ * implement NativeFeedback (from react-navigation)
+ *
  * TouchableItem renders a touchable that looks native on both iOS and Android.
  *
  * It provides an abstraction on top of TouchableNativeFeedback and

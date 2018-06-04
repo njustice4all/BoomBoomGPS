@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Easing, Animated, StatusBar, SafeAreaView } from 'react-native';
-import { createStackNavigator } from 'react-navigation';
+import { createStackNavigator, SwitchNavigator } from 'react-navigation';
 import { initializeListeners } from 'react-navigation-redux-helpers';
 import { connect } from 'react-redux';
 import { navigationPropConstructor } from './utils/reduxNavigation';
@@ -8,21 +8,23 @@ import { navigationPropConstructor } from './utils/reduxNavigation';
 import HomeScreen from './screens/HomeScreen';
 import SettingScreen from './screens/SettingScreen';
 import DetailScreen from './screens/DetailScreen';
-import SignInScreen from './screens/SignInScreen';
+import { SignInScreen, LoadingScreen } from './screens/Authentication';
 
-export const RootStackNavigator = createStackNavigator(
+const AuthStack = createStackNavigator({
+  SignInScreen,
+});
+
+const RootStack = createStackNavigator(
   {
-    HomeScreen: { screen: HomeScreen },
-    SettingScreen: { screen: SettingScreen },
-    DetailScreen: { screen: DetailScreen },
-    SignInScreen: { screen: SignInScreen },
+    HomeScreen,
+    SettingScreen,
+    DetailScreen,
   },
   {
     mode: 'modal',
     navigationOptions: {
       gesturesEnabled: false,
     },
-    initialRouteName: 'SignInScreen',
     transitionConfig: () => ({
       transitionSpec: {
         duration: 300,
@@ -47,6 +49,17 @@ export const RootStackNavigator = createStackNavigator(
   }
 );
 
+export const AppStackNavigator = SwitchNavigator(
+  {
+    LoadingScreen,
+    AuthStack,
+    RootStack,
+  },
+  {
+    initialRouteName: 'LoadingScreen',
+  }
+);
+
 class AppNavigator extends Component {
   componentDidMount() {
     initializeListeners('root', this.props.nav);
@@ -60,7 +73,7 @@ class AppNavigator extends Component {
     return (
       <SafeAreaView style={{ flex: 1 }}>
         <StatusBar />
-        <RootStackNavigator navigation={navigation} />
+        <AppStackNavigator navigation={navigation} />
       </SafeAreaView>
     );
   }

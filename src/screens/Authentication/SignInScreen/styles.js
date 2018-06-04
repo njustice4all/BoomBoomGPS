@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
 
-import { PURPLE, PURPLE_DARK } from '../../styles';
+import { PURPLE, PURPLE_DARK } from '../../../styles';
 
 export default StyleSheet.create({
   container: {

@@ -1,38 +1,35 @@
 import React from 'react';
-import { Text, View, Switch, TouchableNativeFeedback } from 'react-native';
+import { AsyncStorage, Text, View, Switch } from 'react-native';
 
 import { PURPLE, headerTitleStyle } from '../../styles';
 import styles from './styles';
+
 import { IconIonicons } from '../../components/Icons';
+import TouchableItem from '../../components/TouchableItem';
 import BoomBoomGPS from '../../modules/BoomBoomGPS';
 
 class SettingScreen extends React.Component {
   state = { status: true };
 
-  static navigationOptions = {
-    title: '설 정',
-    headerTintColor: 'white',
-    headerStyle: {
-      backgroundColor: PURPLE,
-      elevation: 0,
-    },
-    headerTitleStyle,
-    headerRight: <View />,
-  };
-
-  componentDidMount = () => {
-    BoomBoomGPS.getListenStatus().then(status => {
+  componentDidMount = async () => {
+    await BoomBoomGPS.getListenStatus().then(status => {
       this.setState(prevState => ({ status }));
     });
   };
 
-  _onPress = () => {
-    BoomBoomGPS.setGPS();
+  _onGpsPress = async () => {
+    await BoomBoomGPS.setGPS();
   };
 
-  _onValueChange = status => {
+  _onSwitchChange = status => {
     this.setState(prevState => ({ status }));
     BoomBoomGPS.setListenStatus(status);
+  };
+
+  _onSignOutPress = async () => {
+    await AsyncStorage.clear();
+
+    this.props.navigation.navigate('SignInScreen');
   };
 
   render() {
@@ -44,21 +41,18 @@ class SettingScreen extends React.Component {
           <View style={styles.textContainer}>
             <Text style={styles.text}>아티사운드 서비스</Text>
           </View>
-
           <View>
             <Switch
               value={status}
-              onValueChange={this._onValueChange}
-              onTintColor="#836fc6"
+              onValueChange={this._onSwitchChange}
+              onTintColor={PURPLE}
               thumbTintColor="white"
             />
           </View>
         </View>
 
-        <TouchableNativeFeedback
-          onPress={this._onPress}
-          background={TouchableNativeFeedback.SelectableBackground()}>
-          <View style={styles.rows}>
+        <TouchableItem style={styles.rows} onPress={this._onGpsPress}>
+          <View style={styles.innerView}>
             <View style={styles.textContainer}>
               <Text style={styles.text}>GPS설정 바로가기</Text>
             </View>
@@ -66,12 +60,34 @@ class SettingScreen extends React.Component {
               <IconIonicons name="ios-arrow-forward" size={22} color="white" />
             </View>
           </View>
-        </TouchableNativeFeedback>
+        </TouchableItem>
 
-        <View style={{ flex: 1, backgroundColor: '#4b416e', marginTop: 20 }} />
+        <TouchableItem style={styles.rows} onPress={this._onSignOutPress}>
+          <View style={styles.innerView}>
+            <View style={styles.textContainer}>
+              <Text style={styles.text}>로그아웃</Text>
+            </View>
+            <View style={styles.iconWrapper}>
+              <IconIonicons name="ios-arrow-forward" size={22} color="white" />
+            </View>
+          </View>
+        </TouchableItem>
+
+        <View style={styles.remainView} />
       </View>
     );
   }
 }
+
+SettingScreen.navigationOptions = {
+  title: '설 정',
+  headerTintColor: 'white',
+  headerStyle: {
+    backgroundColor: PURPLE,
+    elevation: 0,
+  },
+  headerTitleStyle,
+  headerRight: <View />,
+};
 
 export default SettingScreen;

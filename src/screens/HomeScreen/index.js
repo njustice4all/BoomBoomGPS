@@ -38,30 +38,6 @@ const Item = ({ item, navigation, onItemPress }) => (
 class HomeScreen extends PureComponent {
   state = { refreshing: false };
 
-  static navigationOptions = ({ navigation }) => ({
-    title: '아티사운드',
-    headerTintColor: 'white',
-    headerStyle: {
-      backgroundColor: PURPLE,
-      elevation: 0,
-    },
-    headerTitleStyle,
-    headerLeft: <View />,
-    headerRight: (
-      <TouchableItem
-        onPressIn={() =>
-          setTimeout(() => {
-            navigation.navigate('SettingScreen');
-          }, 100)
-        }
-        borderless>
-        <View style={styles.settingView}>
-          <IconFeather name="settings" size={22} color="white" />
-        </View>
-      </TouchableItem>
-    ),
-  });
-
   componentDidMount() {
     this.props.getAllShops();
   }
@@ -108,6 +84,30 @@ class HomeScreen extends PureComponent {
     );
   }
 }
+
+HomeScreen.navigationOptions = ({ navigation }) => ({
+  title: '아티사운드',
+  headerTintColor: 'white',
+  headerStyle: {
+    backgroundColor: PURPLE,
+    elevation: 0,
+  },
+  headerTitleStyle,
+  headerLeft: <View />,
+  headerRight: (
+    <TouchableItem
+      onPressIn={() =>
+        setTimeout(() => {
+          navigation.navigate('SettingScreen');
+        }, 100)
+      }
+      borderless>
+      <View style={styles.settingView}>
+        <IconFeather name="settings" size={22} color="white" />
+      </View>
+    </TouchableItem>
+  ),
+});
 
 export default connect(
   state => ({
