@@ -15,8 +15,8 @@ const getAllShops = (state, action) =>
   Object.assign({}, state, {
     ...state,
     isFetching: false,
-    info: action.payload.info,
-    lists: action.payload.results,
+    // info: action.payload.info,
+    lists: action.payload,
   });
 
 const loadMoreShops = (state, action) =>
@@ -24,7 +24,7 @@ const loadMoreShops = (state, action) =>
     ...state,
     isFetching: false,
     info: action.payload.info,
-    lists: [...state.lists, ...action.payload.results],
+    lists: [...state.lists, ...action.payload],
   });
 
 const initialState = {

@@ -8,7 +8,7 @@ export default StyleSheet.create({
     backgroundColor: PURPLE_DARK,
   },
   rows: {
-    marginTop: 20,
+    marginTop: 15,
     backgroundColor: PURPLE_TINT,
     alignItems: 'center',
     flexDirection: 'row',

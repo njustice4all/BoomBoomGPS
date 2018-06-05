@@ -3,6 +3,12 @@ import { StyleSheet } from 'react-native';
 import { PURPLE_TINT } from '../../styles';
 
 export default StyleSheet.create({
+  loadingContainer: {
+    flex: 1,
+    backgroundColor: '#3f395c',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   container: {
     flex: 1,
     backgroundColor: '#3f395c',
@@ -38,6 +44,17 @@ export default StyleSheet.create({
   },
   itemText: {
     color: 'white',
+  },
+  itemTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
+  itemContent: {
+    flex: 1,
+    marginVertical: 5,
+  },
+  itemBottom: {
+    textAlign: 'right',
   },
   itemArrow: {
     justifyContent: 'center',

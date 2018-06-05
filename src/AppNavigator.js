@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Easing, Animated, StatusBar, SafeAreaView } from 'react-native';
+import { StatusBar, SafeAreaView, Easing, Animated } from 'react-native';
 import { createStackNavigator, SwitchNavigator } from 'react-navigation';
 import { initializeListeners } from 'react-navigation-redux-helpers';
 import { connect } from 'react-redux';
@@ -26,24 +26,43 @@ const RootStack = createStackNavigator(
       gesturesEnabled: false,
     },
     transitionConfig: () => ({
+      // https://medium.com/async-la/custom-transitions-in-react-navigation-2f759408a053
       transitionSpec: {
-        duration: 300,
+        duration: 500,
         easing: Easing.out(Easing.poly(4)),
         timing: Animated.timing,
         useNativeDriver: true,
       },
       screenInterpolator: sceneProps => {
-        const { layout, position, scene } = sceneProps;
-
+        const {
+          position, layout, scene, index, scenes,
+        } = sceneProps;
+        const toIndex = index;
         const thisSceneIndex = scene.index;
+        const height = layout.initHeight;
         const width = layout.initWidth;
 
         const translateX = position.interpolate({
-          inputRange: [thisSceneIndex - 1, thisSceneIndex],
-          outputRange: [width, 0],
+          inputRange: [thisSceneIndex - 1, thisSceneIndex, thisSceneIndex + 1],
+          outputRange: [width, 0, 0],
         });
 
-        return { transform: [{ translateX }] };
+        const translateY = position.interpolate({
+          inputRange: [0, thisSceneIndex],
+          outputRange: [height, 0],
+        });
+
+        const slideFromRight = { transform: [{ translateX }] };
+        const slideFromBottom = { transform: [{ translateY }] };
+
+        const lastSceneIndex = scenes[scenes.length - 1].index;
+
+        if (lastSceneIndex - toIndex > 1) {
+          if (scene.index === toIndex) return;
+          if (scene.index !== lastSceneIndex) return { opacity: 0 };
+          return slideFromBottom;
+        }
+        return slideFromRight;
       },
     }),
   }

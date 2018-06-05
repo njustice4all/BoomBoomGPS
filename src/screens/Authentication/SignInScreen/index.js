@@ -28,13 +28,19 @@ class SignInScreen extends Component {
     const { id, pw, autoLogin } = this.state;
 
     if (autoLogin) {
-      const user = JSON.stringify({ id, pw, autoLogin });
-      await AsyncStorage.setItem('user', user);
+      // const user = JSON.stringify({ id, pw, autoLogin });
+      try {
+        await AsyncStorage.setItem('user', 'hello');
+      } catch (error) {
+        console.log(error);
+      }
     }
 
-    setTimeout(() => {
-      this.props.navigation.dispatch(NavigationActions.navigate({ routeName: 'HomeScreen' }));
-    }, 100);
+    this.props.navigation.dispatch(NavigationActions.navigate({ routeName: 'HomeScreen' }));
+
+    // setTimeout(() => {
+    //   this.props.navigation.dispatch(NavigationActions.navigate({ routeName: 'HomeScreen' }));
+    // }, 100);
   };
 
   _onCheckBoxChange = () => {

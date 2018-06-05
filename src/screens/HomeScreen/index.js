@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { View, Text, FlatList, Image, Linking } from 'react-native';
+import { View, Text, FlatList, Image, Linking, ActivityIndicator } from 'react-native';
 import { connect } from 'react-redux';
 
 import { actionGetAllShops, actionLoadMoreShops } from '../../actions/actionTypes';
@@ -13,19 +13,21 @@ const Item = ({ item, navigation, onItemPress }) => (
   <TouchableItem style={styles.itemContainer} onPress={onItemPress(navigation, item)}>
     <View style={styles.itemInner}>
       <View style={styles.itemImage}>
-        <Image style={styles.image} source={{ uri: item.picture.large }} />
+        <Image style={styles.image} source={{ uri: item.image }} />
       </View>
       <View style={styles.itemContentView}>
         <View>
-          <Text style={styles.itemText}>{item.login.username}</Text>
+          <Text numberOfLines={1} style={[styles.itemText, styles.itemTitle]}>
+            {item.name}
+          </Text>
         </View>
-        <View>
-          <Text style={styles.itemText}>
-            {item.location.city} {item.location.state} {item.location.street}
+        <View style={styles.itemContent}>
+          <Text numberOfLines={3} style={styles.itemText}>
+            {item.description}
           </Text>
         </View>
         <View>
-          <Text style={styles.itemText}>{item.email}</Text>
+          <Text style={[styles.itemText, styles.itemBottom]}>{item.available}</Text>
         </View>
       </View>
       <View style={styles.itemArrow}>
@@ -47,12 +49,11 @@ class HomeScreen extends PureComponent {
   };
 
   _loadMore = () => {
-    this.props.loadMore();
+    // this.props.loadMore();
   };
 
   onItemPress = (navigation, item) => () => {
-    // FIXME:
-    Linking.openURL('https://www.naver.com');
+    Linking.openURL(item.uri);
     // navigation.navigate('DetailScreen', { title: item.login.username });
   };
 
@@ -61,8 +62,8 @@ class HomeScreen extends PureComponent {
 
     if (lists.length === 0) {
       return (
-        <View style={styles.container}>
-          <Text>LOADING INDICATOR HERE</Text>
+        <View style={styles.loadingContainer}>
+          <ActivityIndicator />
         </View>
       );
     }

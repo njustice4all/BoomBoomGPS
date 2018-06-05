@@ -10,8 +10,6 @@ import android.os.IBinder;
 import android.util.Log;
 import android.widget.Toast;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import kr.co.innochal.touchsorilibrary.classes.OnTouchSoriListener;
@@ -28,25 +26,11 @@ public class BoomBoomService extends Service {
 
   public static TouchSori touchSori;
   public static Status currentStatus;
-//  public static final HashMap<Result, Integer> soundMap;
   private List<BoomBoomModel> shopLists;
   private final String url = "http://192.168.10.53:3001/locations";
 
   private BoomBoomHelper boomBoomHelper;
   private BoomBoomUtils boomBoomUtils;
-
-//  static {
-//    soundMap = new HashMap<>();
-//    soundMap.put(Result.SOUND_PARSE_RESULT_BUTTON0, 0);
-//    soundMap.put(Result.SOUND_PARSE_RESULT_BUTTON1, 0);
-//    soundMap.put(Result.SOUND_PARSE_RESULT_BUTTON2, 0);
-//    soundMap.put(Result.SOUND_PARSE_RESULT_BUTTON3, 0);
-//    soundMap.put(Result.SOUND_PARSE_RESULT_BUTTON4, 0);
-//    soundMap.put(Result.SOUND_PARSE_RESULT_BUTTON5, 0);
-//    soundMap.put(Result.SOUND_PARSE_RESULT_BUTTON6, 0);
-//    soundMap.put(Result.SOUND_PARSE_RESULT_BUTTON7, 0);
-//    soundMap.put(Result.SOUND_PARSE_RESULT_BUTTON9, 0);
-//  }
 
   LocationListener[] mLocationListeners = new LocationListener[]{
     new LocationListener(LocationManager.GPS_PROVIDER),
@@ -145,12 +129,7 @@ public class BoomBoomService extends Service {
           Log.e("BOOM!!!", hey);
         }
         // 터치소리 시작
-        String[] test = {
-          "A_0_1",
-          "A_0_2",
-        };
-        touchSori.startTouchSori(test);
-        // touchSori.startTouchSori(frequencyStringArray);
+        touchSori.startTouchSori(frequencyStringArray);
       } else if (boomBoomUtils.getNears(lat, lng).size() == 0 && currentStatus == Status.START) {
         Log.e("stop", "stop");
         // 터치소리 중지
@@ -220,44 +199,5 @@ public class BoomBoomService extends Service {
         boomBoomHelper.boomBoomGetNoti(shop);
       }
     });
-
-//    touchSori.setOnTouchSoriListener(new OnTouchSoriListener() {
-//      @Override
-//      public void onServiceStatus(Status status, String s) {
-//        Log.e("TouchSori - STATUS", s);
-//        currentStatus = status;
-//      }
-//
-//      @Override
-//      public void onPressedButton(Result result, String s) {
-//        BoomBoomModel shop = new BoomBoomModel();
-//
-//        if (soundMap.get(result) > 0) {
-//          // FIXME: 테스트용으로 주석
-//          // return;
-//        }
-//
-//        try {
-//          for (int i = 0; i < shopLists.size(); i++) {
-//            if (shopLists.get(i).frequency.equals(result.name())) {
-//              shop = new BoomBoomModel(
-//                shopLists.get(i).name,
-//                shopLists.get(i).id,
-//                shopLists.get(i).lat,
-//                shopLists.get(i).lng,
-//                shopLists.get(i).uri,
-//                shopLists.get(i).frequency,
-//                shopLists.get(i).description
-//              );
-//            }
-//          }
-//        } catch (Exception e) {
-//          e.printStackTrace();
-//        }
-//
-//        soundMap.put(result, soundMap.get(result) + 1);
-//        boomBoomHelper.boomBoomGetNoti(shop);
-//      }
-//    });
   }
 }
