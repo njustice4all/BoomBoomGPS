@@ -10,7 +10,9 @@ class LoadingScreen extends Component {
 
   _onAuthentication = async () => {
     try {
+      console.log('....');
       const user = await AsyncStorage.getItem('user');
+      console.log('why ???????????');
       this.props.navigation.navigate(user ? 'HomeScreen' : 'SignInScreen');
     } catch (error) {
       console.log(error);

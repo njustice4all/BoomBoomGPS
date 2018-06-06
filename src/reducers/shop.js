@@ -1,10 +1,5 @@
 import { GET_ALL_SHOPS, LOAD_MORE_SHOPS } from '../actions/actionTypes';
 
-/**
- * TODO:
- * 현재 패턴은 뭔가 반복되는 느낌이다
- * 리팩포링을 하자...
- */
 const fetching = (state, action) =>
   Object.assign({}, state, {
     ...state,

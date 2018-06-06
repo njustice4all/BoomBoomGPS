@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { StatusBar, SafeAreaView, Easing, Animated } from 'react-native';
-import { createStackNavigator, SwitchNavigator } from 'react-navigation';
+import { createStackNavigator, createSwitchNavigator } from 'react-navigation';
 import { initializeListeners } from 'react-navigation-redux-helpers';
 import { connect } from 'react-redux';
 import { navigationPropConstructor } from './utils/reduxNavigation';
@@ -68,7 +68,7 @@ const RootStack = createStackNavigator(
   }
 );
 
-export const AppStackNavigator = SwitchNavigator(
+export const AppStackNavigator = createSwitchNavigator(
   {
     LoadingScreen,
     AuthStack,

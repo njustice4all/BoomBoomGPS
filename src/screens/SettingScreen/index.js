@@ -8,6 +8,19 @@ import { IconIonicons } from '../../components/Icons';
 import TouchableItem from '../../components/TouchableItem';
 import BoomBoomGPS from '../../modules/BoomBoomGPS';
 
+const TouchablaRow = ({ title, onPress }) => (
+  <TouchableItem style={styles.rows} onPress={onPress}>
+    <View style={styles.innerView}>
+      <View style={styles.textContainer}>
+        <Text style={styles.text}>{title}</Text>
+      </View>
+      <View style={styles.iconWrapper}>
+        <IconIonicons name="ios-arrow-forward" size={22} color="white" />
+      </View>
+    </View>
+  </TouchableItem>
+);
+
 class SettingScreen extends React.Component {
   state = { status: true };
 
@@ -17,7 +30,7 @@ class SettingScreen extends React.Component {
     });
   };
 
-  _onGpsPress = async () => {
+  onGpsPress = async () => {
     await BoomBoomGPS.setGPS();
   };
 
@@ -26,7 +39,7 @@ class SettingScreen extends React.Component {
     BoomBoomGPS.setListenStatus(status);
   };
 
-  _onSignOutPress = async () => {
+  onSignOutPress = async () => {
     await AsyncStorage.clear();
 
     this.props.navigation.navigate('SignInScreen');
@@ -51,27 +64,8 @@ class SettingScreen extends React.Component {
           </View>
         </View>
 
-        <TouchableItem style={styles.rows} onPress={this._onGpsPress}>
-          <View style={styles.innerView}>
-            <View style={styles.textContainer}>
-              <Text style={styles.text}>GPS설정 바로가기</Text>
-            </View>
-            <View style={styles.iconWrapper}>
-              <IconIonicons name="ios-arrow-forward" size={22} color="white" />
-            </View>
-          </View>
-        </TouchableItem>
-
-        <TouchableItem style={styles.rows} onPress={this._onSignOutPress}>
-          <View style={styles.innerView}>
-            <View style={styles.textContainer}>
-              <Text style={styles.text}>로그아웃</Text>
-            </View>
-            <View style={styles.iconWrapper}>
-              <IconIonicons name="ios-arrow-forward" size={22} color="white" />
-            </View>
-          </View>
-        </TouchableItem>
+        <TouchablaRow title="GPS설정 바로가기" onPress={this.onGpsPress} />
+        <TouchablaRow title="로그아웃" onPress={this.onSignOutPress} />
 
         <View style={styles.remainView} />
       </View>
