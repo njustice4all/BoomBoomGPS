@@ -13,3 +13,9 @@
 - notification 내에서 닫힘 / 열기 처리 (닫기 or 브라우저열기)
 - android gps 설정으로 이동하는 모듈
 - 앱, background service 종료하는 모듈
+
+### TODOS
+
+- [x] react-navigation
+- [x] redux state for navigation
+- [ ] Migrate to typescript
