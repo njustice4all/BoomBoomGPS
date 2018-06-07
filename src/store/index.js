@@ -8,7 +8,7 @@ import rootSaga from '../sagas';
 import reducer from '../reducers';
 
 export default function configureStore(initialState) {
-  // crate saga
+  // create saga
   const sagaMiddleware = createSagaMiddleware();
 
   // logger option

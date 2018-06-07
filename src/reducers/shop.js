@@ -1,27 +1,5 @@
 import { GET_ALL_SHOPS, LOAD_MORE_SHOPS } from '../actions/actionTypes';
 
-const fetching = (state, action) =>
-  Object.assign({}, state, {
-    ...state,
-    isFetching: true,
-  });
-
-const getAllShops = (state, action) =>
-  Object.assign({}, state, {
-    ...state,
-    isFetching: false,
-    // info: action.payload.info,
-    lists: action.payload,
-  });
-
-const loadMoreShops = (state, action) =>
-  Object.assign({}, state, {
-    ...state,
-    isFetching: false,
-    info: action.payload.info,
-    lists: [...state.lists, ...action.payload],
-  });
-
 const initialState = {
   lists: [],
   isFetching: false,
@@ -38,11 +16,24 @@ export default function shop(state = initialState, action) {
   switch (action.type) {
     case GET_ALL_SHOPS.REQUEST:
     case LOAD_MORE_SHOPS.REQUEST:
-      return fetching(state, action);
+      return {
+        ...state,
+        isFetching: true,
+      };
     case GET_ALL_SHOPS.SUCCESS:
-      return getAllShops(state, action);
+      return {
+        ...state,
+        isFetching: false,
+        // info: action.payload.info,
+        lists: action.payload,
+      };
     case LOAD_MORE_SHOPS.SUCCESS:
-      return loadMoreShops(state, action);
+      return {
+        ...state,
+        isFetching: false,
+        info: action.payload.info,
+        lists: [...state.lists, ...action.payload],
+      };
     case GET_ALL_SHOPS.FAILURE:
     case LOAD_MORE_SHOPS.FAILURE:
       return state;
